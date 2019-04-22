@@ -23,14 +23,14 @@ type Configuration struct {
 }
 
 type SDK interface {
-	Dial(orgId string, serviceId string) (*grpc.ClientConn, error)
+	Dial(orgId, serviceId, groupName string) (*grpc.ClientConn, error)
 }
 
 type SDKImpl struct {
 	conn grpc.ClientConn
 }
 
-func (sdk *SDKImpl) Dial(orgId string, serviceId string) (conn *grpc.ClientConn, err error) {
+func (sdk *SDKImpl) Dial(orgId, serviceId, groupName string) (conn *grpc.ClientConn, err error) {
 	return nil, errors.New("Not implemented yet")
 }
 

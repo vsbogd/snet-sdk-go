@@ -1,2 +1,6 @@
 # Auto-generated protobuf files
 *.pb.go
+# 3rd party dependencies
+vendor
+# VIM temprorary files
+*.swp

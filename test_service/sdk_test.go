@@ -3,12 +3,39 @@ package test_service
 
 import (
 	"context"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"testing"
 
+	"github.com/ipfs/go-ipfs/core"
+	"github.com/ipfs/go-ipfs/repo"
 	"github.com/stretchr/testify/assert"
 
 	. "github.com/singnet/snet-sdk-go/sdk"
 )
+
+func TestMain(m *testing.M) {
+	defer initIpfs()
+}
+
+func initIpfs() func() {
+	repo := repo.Mock{}
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	cfg := &core.BuildCfg{
+		Repo:   repo,
+		Online: true,
+	}
+
+	node, err := core.NewNode(ctx, cfg)
+	if err != nil {
+		panic(fmt.Sprintf("Could not initialize IPFS: %v", err))
+	}
+
+	return cancel
+}
 
 func TestWorkdflow(t *testing.T) {
 	config := &Configuration{
@@ -18,7 +45,7 @@ func TestWorkdflow(t *testing.T) {
 		IdentityMnemonic: "one two three four five",
 	}
 	sdk := NewSDK(config)
-	conn, err := sdk.Dial("test-org", "test-service")
+	conn, err := sdk.Dial("test-org", "test-service", "uk")
 	assert.Nil(t, err)
 	defer conn.Close()
 	client := NewTestServiceClient(conn)
